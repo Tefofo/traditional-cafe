@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   @apply bg-[#0e0e10] text-white font-sans m-0;
 }
