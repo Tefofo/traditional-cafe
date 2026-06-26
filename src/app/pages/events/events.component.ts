@@ -12,6 +12,17 @@ import { CafeDataService } from '../../services/cafe-data.service';
           <p class="text-gray-400">Something happening every week at Traditional Cafe</p>
         </div>
 
+        <!-- Event Gallery -->
+        <div class="grid sm:grid-cols-2 gap-6 mb-16">
+          @for (img of eventImages; track img.src) {
+            <div class="relative rounded-2xl overflow-hidden group">
+              <img [src]="img.src" [alt]="img.alt" class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-500">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+              <p class="absolute bottom-4 left-4 text-white font-semibold text-lg">{{img.alt}}</p>
+            </div>
+          }
+        </div>
+
         <h3 class="text-xl font-semibold text-amber-500 mb-6">Weekly Recurring</h3>
         <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
           @for (event of recurringEvents; track event.title) {
@@ -33,4 +44,11 @@ import { CafeDataService } from '../../services/cafe-data.service';
 export class EventsComponent {
   data = inject(CafeDataService);
   get recurringEvents() { return this.data.events.filter(e => e.recurring); }
+
+  eventImages = [
+    { src: 'deephousefridays.jpg', alt: 'Deep House Fridays' },
+    { src: 'event_Bongs.jpg', alt: 'Live Events' },
+    { src: 'event_2.jpg', alt: 'Weekend Vibes' },
+    { src: 'flyer_example.jpg', alt: 'Special Events' },
+  ];
 }
