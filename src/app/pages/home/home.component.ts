@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CafeDataService } from '../../services/cafe-data.service';
 
@@ -8,8 +8,18 @@ import { CafeDataService } from '../../services/cafe-data.service';
   imports: [RouterLink],
   template: `
     <section class="relative min-h-screen bg-[#0e0e10] text-white flex items-center justify-center overflow-hidden">
-      <div class="absolute top-[-10%] left-[-20%] w-[600px] h-[600px] bg-amber-600/10 rounded-full blur-[120px]"></div>
-      <div class="absolute bottom-[-10%] right-[-20%] w-[600px] h-[600px] bg-orange-600/10 rounded-full blur-[120px]"></div>
+      <!-- Animated Background Images -->
+      @for (img of images; track img; let i = $index) {
+        <div class="absolute inset-0 transition-opacity duration-[2000ms] ease-in-out bg-cover bg-center"
+             [style.background-image]="'url(' + img + ')'"
+             [style.opacity]="i === activeSlide ? '1' : '0'">
+        </div>
+      }
+      <!-- Dark overlay -->
+      <div class="absolute inset-0 bg-black/60 z-[1]"></div>
+      <!-- Ambient glows -->
+      <div class="absolute top-[-10%] left-[-20%] w-[600px] h-[600px] bg-amber-600/10 rounded-full blur-[120px] z-[2]"></div>
+      <div class="absolute bottom-[-10%] right-[-20%] w-[600px] h-[600px] bg-orange-600/10 rounded-full blur-[120px] z-[2]"></div>
 
       <div class="container mx-auto px-6 max-w-6xl z-10 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
         <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
@@ -17,7 +27,7 @@ import { CafeDataService } from '../../services/cafe-data.service';
           <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight leading-none">
             Authentic African Cuisine <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-500">& Premium Lounge</span>
           </h1>
-          <p class="text-gray-400 text-lg md:text-xl max-w-xl mx-auto lg:mx-0">
+          <p class="text-gray-300 text-lg md:text-xl max-w-xl mx-auto lg:mx-0">
             Experience Mogodu Mondays, Soul Sundays, and signature dishes right in the heart of Riverside View, Fourways.
           </p>
           <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-4">
@@ -32,7 +42,7 @@ import { CafeDataService } from '../../services/cafe-data.service';
           </div>
         </div>
 
-        <div class="lg:col-span-5 bg-white/[0.02] border border-white/[0.08] backdrop-blur-md rounded-3xl p-8 space-y-6 shadow-2xl">
+        <div class="lg:col-span-5 bg-black/40 border border-white/[0.08] backdrop-blur-md rounded-3xl p-8 space-y-6 shadow-2xl">
           <h3 class="text-xl font-bold text-amber-500 border-b border-white/10 pb-3">Tonight's Plan</h3>
           <div class="space-y-4">
             <div class="flex items-start gap-4">
@@ -59,11 +69,33 @@ import { CafeDataService } from '../../services/cafe-data.service';
           </div>
         </div>
       </div>
+
+      <!-- Slide indicators -->
+      <div class="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 flex gap-2">
+        @for (img of images; track img; let i = $index) {
+          <button (click)="activeSlide = i"
+                  class="w-2 h-2 rounded-full transition-all duration-300"
+                  [class]="i === activeSlide ? 'bg-amber-500 w-6' : 'bg-white/30'"></button>
+        }
+      </div>
     </section>
   `,
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit, OnDestroy {
   data = inject(CafeDataService);
+  images = ['deephousefridays.jpg', 'dumbling.jpg', 'flyer_example.jpg'];
+  activeSlide = 0;
+  private interval: any;
+
+  ngOnInit() {
+    this.interval = setInterval(() => {
+      this.activeSlide = (this.activeSlide + 1) % this.images.length;
+    }, 5000);
+  }
+
+  ngOnDestroy() {
+    clearInterval(this.interval);
+  }
 
   get todayHours(): string {
     const day = new Date().getDay();
