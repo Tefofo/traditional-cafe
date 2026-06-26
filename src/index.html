@@ -9,6 +9,10 @@
   <link rel="icon" type="image/x-icon" href="favicon.ico">
 </head>
 <body>
+  <script>
+    // GitHub Pages SPA routing support
+    (function(){var r=window.location,s=r.search;if(s&&s.indexOf('?/')!==-1){var q=s.slice(1).split('&'),d=q[0].replace(/\//g,'/').replace(/~and~/g,'&');window.history.replaceState(null,null,r.pathname.slice(0,-1)+d+(q.length>1?'?'+q.slice(1).join('&').replace(/~and~/g,'&'):'')+r.hash);}})();
+  </script>
   <app-root></app-root>
 </body>
 </html>

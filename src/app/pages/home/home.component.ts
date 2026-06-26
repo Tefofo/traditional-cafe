@@ -1,9 +1,11 @@
 import { Component, inject } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { CafeDataService } from '../../services/cafe-data.service';
 
 @Component({
   selector: 'app-home',
   standalone: true,
+  imports: [RouterLink],
   template: `
     <section class="relative min-h-screen bg-[#0e0e10] text-white flex items-center justify-center overflow-hidden">
       <div class="absolute top-[-10%] left-[-20%] w-[600px] h-[600px] bg-amber-600/10 rounded-full blur-[120px]"></div>
@@ -23,7 +25,7 @@ import { CafeDataService } from '../../services/cafe-data.service';
                class="px-8 py-4 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 font-bold rounded-xl transition duration-300 transform hover:-translate-y-1 text-center shadow-lg shadow-orange-950/40">
               Order on Uber Eats
             </a>
-            <a href="/book"
+            <a routerLink="/book"
                class="px-8 py-4 bg-white/5 hover:bg-white/10 border border-white/10 font-bold rounded-xl transition duration-300 text-center backdrop-blur-sm">
               Reserve a Table
             </a>
